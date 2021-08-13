@@ -15,7 +15,6 @@ const App = () => {
     },[])
     return (
         <div>
-            <h1>App</h1>
             <AuthComponent isLoggedIn={isLoggedIn} handleAuth={handleAuth}/>
         </div>
     )
