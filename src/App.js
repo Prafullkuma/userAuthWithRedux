@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useState,useEffect} from 'react'
+import AuthComponent from './components/AuthComponent'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const [isLoggedIn,setIsLoggedIn]=useState(false)
+    
+    const handleAuth=()=>{
+        setIsLoggedIn(!isLoggedIn)
+    }
+
+    useEffect(()=>{
+        if(localStorage.getItem('token')){
+            handleAuth()
+        }
+    },[])
+    return (
+        <div>
+            <h1>App</h1>
+            <AuthComponent isLoggedIn={isLoggedIn} handleAuth={handleAuth}/>
+        </div>
+    )
 }
 
-export default App;
+export default App

@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+printf '*.jpg\n*.jpeg\n*.png\n*.gif\n' >> .gitignore
 
 # testing
 /coverage
