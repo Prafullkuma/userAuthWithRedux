@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import AuthComponent from './components/AuthComponent'
 
 const App = () => {
@@ -8,11 +8,6 @@ const App = () => {
         setIsLoggedIn(!isLoggedIn)
     }
 
-    useEffect(()=>{
-        if(localStorage.getItem('token')){
-            handleAuth()
-        }
-    },[])
     return (
         <div>
             <AuthComponent isLoggedIn={isLoggedIn} handleAuth={handleAuth}/>

@@ -1,20 +1,23 @@
 import React from 'react'
-import {  Route,Redirect } from 'react-router-dom'
-
+import {Route,Redirect} from 'react-router-dom'
 
 const PrivateRoute = ({component:Component,...rest}) => {
-        //...rest return and object with path and component function
-        // component which names as alies  
-        return(
-                <Route {...rest} render={(props)=>{
-                       localStorage.getItem('token')
-                       ? 
-                         <Component {...props}/>
-                        :
-                        <Redirect to="/"/>
-                }}/>
+       console.log(rest)
+        return (
+                <Route
+                {...rest}
+                  render={(props)=>{
+                         localStorage.getItem('token')
+                          ?
+                           <Component {...props}/> 
+                           :
+                           <Redirect to={{
+                                   pathname:'/login'
+                           }}/>
+                  }}
+                />
         )
-
 }
+
 
 export default PrivateRoute

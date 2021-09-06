@@ -1,16 +1,15 @@
 import React  from 'react'
-import { Link, Route,withRouter } from 'react-router-dom'
+import { Link, Route,Switch,withRouter } from 'react-router-dom'
 import Home from '../routeComponent/Home'
 import Register from '../routeComponent/Register'
 import Login from '../routeComponent/Login'
 import Mynotes from '../routeComponent/Mynotes/Mynotes'
 import Account from '../routeComponent/Account'
 
-
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-
+import PageNotFound from './PageNotFound'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,8 +24,9 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = (props) => {
     const classes = useStyles();
-  
-    const {isLoggedIn,handleAuth}=props
+    const localVar=localStorage.getItem('token') || false
+
+    const {handleAuth}=props
 
     return (
         <div className={classes.root}>
@@ -34,12 +34,12 @@ const NavBar = (props) => {
             <Grid item xs={12}>
                  <Paper className={classes.paper}>        
                     <div >
-                        <Link to="/">Home</Link>
-                        {isLoggedIn ?
+                        <Link to="/" style={{textDecoration:'none',color:'black'}}>Home</Link>
+                        {localVar ?
                             <>
-                            <Link to="/account" style={{margin:'20px'}}>Account</Link>
-                            <Link to="/mynotes" style={{margin:'20px'}}>My notes</Link>
-                            <Link to="#" onClick={()=>{
+                            <Link to="/account" style={{margin:'20px',textDecoration:'none',color:'black'}}>Account</Link>
+                            <Link to="/mynotes" style={{margin:'20px',textDecoration:'none',color:'black'}}>My notes</Link>
+                            <Link to="#" style={{textDecoration:'none',color:'black'}} onClick={()=>{
                                 alert("sucessfully logged out")
                                 localStorage.removeItem('token')   
                                 props.history.push('/')
@@ -48,20 +48,32 @@ const NavBar = (props) => {
                             </>
                             :
                             <>
-                                <Link to="/register" style={{margin:'20px'}}>register</Link>
-                                <Link to='/login'>Login</Link>
+                                <Link to="/register" style={{margin:'20px',textDecoration:'none',color:'black'}}>register</Link>
+                                <Link to='/login' style={{textDecoration:'none',color:'black'}}>Login</Link>
                             </>
                         }
                     </div>
             </Paper>
             </Grid>
             </Grid>
-            <Route path="/" component={Home} exact/>
-            <Route path="/register" component={Register} />
-            <Route path="/login" render={(props)=><Login {...props} handleAuth={handleAuth}/>} />
-            <Route path="/account" component={Account}/>
-            <Route path="/mynotes" component={Mynotes}/>
+            <Switch>
 
+                    <Route path="/" component={Home} exact/>
+                {localVar
+                   ?
+                       <Switch>
+                           <Route  exact path="/account" component={Account}/>
+                            <Route path="/mynotes" component={Mynotes}/>
+                            <Route component={PageNotFound}/>
+                       </Switch>
+                    :
+                    <Switch>
+                        <Route path="/register" component={Register} />
+                        <Route path="/login" render={(props)=><Login {...props} handleAuth={handleAuth}/>} />
+                        <Route component={PageNotFound}/>
+                    </Switch>
+                   }
+            </Switch>
         </div>
     )
     
